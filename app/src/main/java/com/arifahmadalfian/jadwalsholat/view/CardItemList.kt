@@ -1,0 +1,93 @@
+package com.arifahmadalfian.jadwalsholat.view
+
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
+
+@Composable
+fun CardListItem(
+    modifier: Modifier = Modifier
+) {
+
+    val isEnable = remember {
+        mutableStateOf(false)
+    }
+    val scope = rememberCoroutineScope()
+
+    val scale = remember {
+        Animatable(1f)
+    }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(15.dp)
+            .clickable {
+                isEnable.value = !isEnable.value
+                scope.launch {
+                    scale.animateTo(
+                        0.8f,
+                        animationSpec = tween(100),
+                    )
+                    scale.animateTo(
+                        1f,
+                        animationSpec = tween(100),
+                    )
+                }
+            },
+        elevation = 4.dp,
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Row(
+            modifier = modifier.padding(15.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.W900, color = Color(0xFF4552B8))
+                        ) {
+                            append("Subuh")
+                        }
+                    }
+                )
+            }
+
+            val sdf = SimpleDateFormat("HH:mm")
+            val currentDateAndTime = sdf.format(Date())
+
+            Text(
+                text = currentDateAndTime,
+                textAlign = TextAlign.Center,
+                color = Color.Black,
+                fontWeight = FontWeight.Bold,
+                fontSize = 25.sp,
+            )
+            
+            Spacer(modifier = Modifier.padding(6.dp))
+
+            CheckAnimation(isEnable = isEnable, scale = scale)
+        }
+    }
+}

@@ -1,14 +1,14 @@
 package com.arifahmadalfian.jadwalsholat.presentation
 
 import androidx.compose.animation.Animatable
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,9 +16,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import com.arifahmadalfian.jadwalsholat.ui.theme.Denim
 import com.arifahmadalfian.jadwalsholat.ui.theme.Malibu
 import com.arifahmadalfian.jadwalsholat.ui.theme.TabColorOne
+import com.arifahmadalfian.jadwalsholat.view.CardListItem
+import com.arifahmadalfian.jadwalsholat.view.CheckAnimation
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -61,33 +64,20 @@ fun TabScreen(pagerState: PagerState, tabItems: List<String>, scope: CoroutineSc
 @ExperimentalPagerApi
 @Composable
 fun Tabs(pagerState: PagerState, tabItems: List<String>, scope: CoroutineScope) {
+
+    val indicator = @Composable { tabPositions: List<TabPosition> ->
+        CustomIndicator(tabPositions, pagerState)
+    }
+
     TabRow(
         selectedTabIndex = pagerState.currentPage,
         backgroundColor = Malibu,
         modifier = Modifier
             .padding(all = 6.dp)
-            .background(color = Color.Transparent)
             .clip(RoundedCornerShape(10.dp)),
-        indicator = { tabPositions ->
-            TabRowDefaults.Indicator(
-                modifier = Modifier
-                    .pagerTabIndicatorOffset(pagerState, tabPositions)
-                    .width(0.dp)
-                    .height(0.dp)
-            )
-        }
+        indicator = indicator
     ) {
         tabItems.forEachIndexed { index, title ->
-            val color = remember {
-                Animatable(Denim)
-            }
-
-            LaunchedEffect(key1 = pagerState.currentPage == index) {
-                color.animateTo(
-                    if (pagerState.currentPage == index) Color.White else Malibu
-                )
-            }
-
             Tab(
                 text = {
                     Text(
@@ -103,11 +93,8 @@ fun Tabs(pagerState: PagerState, tabItems: List<String>, scope: CoroutineScope) 
                 },
                 selected = pagerState.currentPage == index,
                 modifier = Modifier
-                    .padding(6.dp)
-                    .background(
-                        color = color.value,
-                        shape = RoundedCornerShape(10.dp)
-                    ),
+                    .zIndex(6f)
+                    .padding(2.dp),
                 onClick = {
                     scope.launch {
                         pagerState.animateScrollToPage(index)
@@ -139,18 +126,47 @@ fun TabsContent(
                 text = tabItems[page],
                 color = Color.Black
             )
+            CardListItem()
         }
     }
 }
 
-//
-//@ExperimentalPagerApi
-//@Preview(showBackground = true)
-//@Composable
-//fun JadwalSholatPreview() {
-//    JadwalSholatTheme {
-//        Surface {
-//            ContentJadwalSholat()
-//        }
-//    }
-//}
+@ExperimentalPagerApi
+@Composable
+private fun CustomIndicator(tabPositions: List<TabPosition>, pagerState: PagerState) {
+    val transition = updateTransition(pagerState.currentPage, label = "")
+    val indicatorStart by transition.animateDp(
+        transitionSpec = {
+            if (initialState < targetState) {
+                spring(dampingRatio = 1f, stiffness = 900f)
+            } else {
+                spring(dampingRatio = 1f, stiffness = 1000f)
+            }
+        }, label = ""
+    ) {
+        tabPositions[it].left
+    }
+
+    val indicatorEnd by transition.animateDp(
+        transitionSpec = {
+            if (initialState < targetState) {
+                spring(dampingRatio = 1f, stiffness = 1000f)
+            } else {
+                spring(dampingRatio = 1f, stiffness = 900f)
+            }
+        }, label = ""
+    ) {
+        tabPositions[it].right
+    }
+
+    Box(
+        Modifier
+            .offset(x = indicatorStart)
+            .wrapContentSize(align = Alignment.BottomStart)
+            .width(indicatorEnd - indicatorStart)
+            .padding(2.dp)
+            .fillMaxSize()
+            .background(color = Color.White, RoundedCornerShape(15))
+            .zIndex(1f)
+    )
+}
