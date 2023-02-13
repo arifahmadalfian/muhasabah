@@ -1,7 +1,9 @@
 package com.arifahmadalfian.jadwalsholat.view
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,10 +20,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.arifahmadalfian.jadwalsholat.ui.theme.Gold
+import com.arifahmadalfian.jadwalsholat.ui.theme.Gray
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
+@ExperimentalAnimationApi
 @Composable
 fun CardListItem(
     modifier: Modifier = Modifier
@@ -36,10 +42,10 @@ fun CardListItem(
         Animatable(1f)
     }
 
-    Card(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(15.dp)
+            .background(if (isEnable.value) Gold else Gray)
             .clickable {
                 isEnable.value = !isEnable.value
                 scope.launch {
@@ -52,9 +58,7 @@ fun CardListItem(
                         animationSpec = tween(100),
                     )
                 }
-            },
-        elevation = 4.dp,
-        shape = RoundedCornerShape(8.dp)
+            }
     ) {
         Row(
             modifier = modifier.padding(15.dp),
@@ -74,11 +78,12 @@ fun CardListItem(
                 )
             }
 
-            val sdf = SimpleDateFormat("HH:mm")
-            val currentDateAndTime = sdf.format(Date())
+            AnimatedCounter()
+
+            Spacer(modifier = Modifier.padding(6.dp))
 
             Text(
-                text = currentDateAndTime,
+                text = "11:00",
                 textAlign = TextAlign.Center,
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,

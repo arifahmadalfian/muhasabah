@@ -1,6 +1,6 @@
 package com.arifahmadalfian.jadwalsholat.presentation
 
-import androidx.compose.animation.Animatable
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.updateTransition
@@ -17,16 +17,17 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import com.arifahmadalfian.jadwalsholat.ui.theme.Denim
-import com.arifahmadalfian.jadwalsholat.ui.theme.Malibu
-import com.arifahmadalfian.jadwalsholat.ui.theme.TabColorOne
+import com.arifahmadalfian.jadwalsholat.ui.theme.Gold
+import com.arifahmadalfian.jadwalsholat.ui.theme.Gren
+import com.arifahmadalfian.jadwalsholat.ui.theme.Gren50
+import com.arifahmadalfian.jadwalsholat.view.CardDay
 import com.arifahmadalfian.jadwalsholat.view.CardListItem
-import com.arifahmadalfian.jadwalsholat.view.CheckAnimation
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 
+@ExperimentalAnimationApi
 @ExperimentalPagerApi
 @Composable
 fun ContentJadwalSholat(
@@ -36,26 +37,16 @@ fun ContentJadwalSholat(
     val pagerState = rememberPagerState(pageCount = tabItems.size)
     val scope = rememberCoroutineScope()
 
-    Column(modifier = modifier) {
-        Toolbar()
+    Column(modifier = modifier.background(Gren50)) {
         TabScreen(pagerState = pagerState, tabItems = tabItems, scope = scope)
     }
 }
 
-@Composable
-fun Toolbar() {
-    TopAppBar(
-        title = { Text(text = "Jadwal Sholat", color = Color.White) },
-        backgroundColor = TabColorOne,
-    )
-}
-
+@ExperimentalAnimationApi
 @ExperimentalPagerApi
 @Composable
 fun TabScreen(pagerState: PagerState, tabItems: List<String>, scope: CoroutineScope) {
-    Column(
-        modifier = Modifier.background(Color.White)
-    ) {
+    Column{
         Tabs(pagerState = pagerState, tabItems = tabItems, scope = scope)
         TabsContent(pagerState = pagerState, tabItems = tabItems)
     }
@@ -71,7 +62,7 @@ fun Tabs(pagerState: PagerState, tabItems: List<String>, scope: CoroutineScope) 
 
     TabRow(
         selectedTabIndex = pagerState.currentPage,
-        backgroundColor = Malibu,
+        backgroundColor = Gren,
         modifier = Modifier
             .padding(all = 6.dp)
             .clip(RoundedCornerShape(10.dp)),
@@ -83,10 +74,10 @@ fun Tabs(pagerState: PagerState, tabItems: List<String>, scope: CoroutineScope) 
                     Text(
                         text = title,
                         style = if (pagerState.currentPage == index) TextStyle(
-                            color = Denim,
+                            color = Color.White,
                             fontSize = 18.sp
                         ) else TextStyle(
-                            color = Denim,
+                            color = Gold,
                             fontSize = 16.sp
                         )
                     )
@@ -106,6 +97,7 @@ fun Tabs(pagerState: PagerState, tabItems: List<String>, scope: CoroutineScope) 
 }
 
 
+@ExperimentalAnimationApi
 @ExperimentalPagerApi
 @Composable
 fun TabsContent(
@@ -122,11 +114,7 @@ fun TabsContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = tabItems[page],
-                color = Color.Black
-            )
-            CardListItem()
+            CardDay()
         }
     }
 }
@@ -164,9 +152,9 @@ private fun CustomIndicator(tabPositions: List<TabPosition>, pagerState: PagerSt
             .offset(x = indicatorStart)
             .wrapContentSize(align = Alignment.BottomStart)
             .width(indicatorEnd - indicatorStart)
-            .padding(2.dp)
+            .padding(6.dp)
             .fillMaxSize()
-            .background(color = Color.White, RoundedCornerShape(15))
+            .background(color = Gold.copy(alpha = 0.5f), RoundedCornerShape(15))
             .zIndex(1f)
     )
 }
