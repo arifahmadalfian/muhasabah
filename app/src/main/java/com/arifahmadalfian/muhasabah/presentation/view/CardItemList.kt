@@ -1,4 +1,4 @@
-package com.arifahmadalfian.jadwalsholat.view
+package com.arifahmadalfian.muhasabah.presentation.view
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.Animatable
@@ -6,8 +6,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,12 +18,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.arifahmadalfian.jadwalsholat.ui.theme.Gold
-import com.arifahmadalfian.jadwalsholat.ui.theme.Gray
-import kotlinx.coroutines.delay
+import com.arifahmadalfian.muhasabah.ui.theme.Gold
+import com.arifahmadalfian.muhasabah.ui.theme.Gray
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 
 @ExperimentalAnimationApi
 @Composable

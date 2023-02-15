@@ -1,4 +1,4 @@
-package com.arifahmadalfian.jadwalsholat.view
+package com.arifahmadalfian.muhasabah.presentation.view
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D

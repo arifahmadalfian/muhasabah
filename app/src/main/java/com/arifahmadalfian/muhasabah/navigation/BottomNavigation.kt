@@ -1,15 +1,16 @@
-package com.arifahmadalfian.jadwalsholat.navigation
+package com.arifahmadalfian.muhasabah.navigation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -17,16 +18,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.arifahmadalfian.jadwalsholat.R
-import com.arifahmadalfian.jadwalsholat.presentation.ContentJadwalSholat
-import com.arifahmadalfian.jadwalsholat.ui.theme.Gold
-import com.arifahmadalfian.jadwalsholat.ui.theme.Gren
+import com.arifahmadalfian.muhasabah.presentation.sholat.ContentJadwalSholat
+import com.arifahmadalfian.muhasabah.ui.theme.Gold
+import com.arifahmadalfian.muhasabah.ui.theme.Gren
+import com.arifahmadalfian.muhasabah.R
+import com.arifahmadalfian.muhasabah.presentation.quran.AlquranScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 
 sealed class BottomNavItem(
@@ -38,16 +43,21 @@ sealed class BottomNavItem(
     object JadwalSholat : BottomNavItem("Sholat", R.drawable.clock, "sholat")
 }
 
+@ExperimentalMaterial3Api
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @Composable
-fun NavigationGraph(navController: NavHostController, lazyListState: LazyListState) {
+fun NavigationGraph(
+    navController: NavHostController,
+    scrollBehavior: TopAppBarScrollBehavior,
+    appBarAlpha: Float
+) {
     NavHost(navController, startDestination = BottomNavItem.AlQuran.route) {
         composable(BottomNavItem.AlQuran.route) {
-            HomeScreen(lazyListState = lazyListState)
+            AlquranScreen(scrollBehavior = scrollBehavior, appBarAlpha = appBarAlpha)
         }
         composable(BottomNavItem.JadwalSholat.route) {
-            JobScreen()
+            ContentJadwalSholat()
         }
     }
 }
@@ -65,9 +75,10 @@ fun BottomNavigationCustom(navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            //.clip(shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
+            .height(56.dp)
+            .clip(shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
             .background(Gren)
-            .padding(8.dp),
+            .padding(6.dp),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -87,33 +98,11 @@ fun BottomNavigationCustom(navController: NavController) {
     }
 }
 
-@Composable
-fun HomeScreen(lazyListState: LazyListState) {
-    LazyColumn(
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(count = 100) {
-            Text("Hello Jetpack Compose")
-        }
-    }
-}
-
-@ExperimentalAnimationApi
-@ExperimentalPagerApi
-@Composable
-fun JobScreen() {
-    ContentJadwalSholat()
-}
-
 @ExperimentalAnimationApi
 @Composable
 fun CustomBottomNavigationItem(item: BottomNavItem, isSelected: Boolean, onClick: () -> Unit) {
-
-    val background =
-        if (isSelected) Gold.copy(alpha = 0.1f) else Color.Transparent
-    val contentColor =
-        if (isSelected) Gold else Gold.copy(alpha = 0.5f)
+    val background = if (isSelected) Gold.copy(alpha = 0.1f) else Color.Transparent
+    val contentColor = if (isSelected) Gold else Gold.copy(alpha = 0.5f)
 
     Box(
         modifier = Modifier
@@ -123,7 +112,7 @@ fun CustomBottomNavigationItem(item: BottomNavItem, isSelected: Boolean, onClick
     ) {
         Row(
             modifier = Modifier
-                .padding(12.dp),
+                .padding(top = 8.dp, bottom = 8.dp, start = 18.dp, end = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
@@ -138,7 +127,10 @@ fun CustomBottomNavigationItem(item: BottomNavItem, isSelected: Boolean, onClick
             AnimatedVisibility(visible = isSelected) {
                 Text(
                     text = item.title,
-                    color = contentColor
+                    textAlign = TextAlign.Center,
+                    color = contentColor,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp,
                 )
             }
         }

@@ -1,4 +1,4 @@
-package com.arifahmadalfian.jadwalsholat.ui.theme
+package com.arifahmadalfian.muhasabah.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

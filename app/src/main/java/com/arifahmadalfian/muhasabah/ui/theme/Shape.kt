@@ -1,4 +1,4 @@
-package com.arifahmadalfian.jadwalsholat.ui.theme
+package com.arifahmadalfian.muhasabah.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

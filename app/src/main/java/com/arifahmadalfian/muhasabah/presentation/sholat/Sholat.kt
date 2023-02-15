@@ -1,4 +1,4 @@
-package com.arifahmadalfian.jadwalsholat.presentation
+package com.arifahmadalfian.muhasabah.presentation.sholat
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateDp
@@ -17,15 +17,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import com.arifahmadalfian.jadwalsholat.ui.theme.Gold
-import com.arifahmadalfian.jadwalsholat.ui.theme.Gren
-import com.arifahmadalfian.jadwalsholat.ui.theme.Gren50
-import com.arifahmadalfian.jadwalsholat.view.CardDay
-import com.arifahmadalfian.jadwalsholat.view.CardListItem
+import com.arifahmadalfian.muhasabah.ui.theme.Gold
+import com.arifahmadalfian.muhasabah.ui.theme.Gren
+import com.arifahmadalfian.muhasabah.ui.theme.Gren50
+import com.arifahmadalfian.muhasabah.presentation.view.CardDay
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-
 
 @ExperimentalAnimationApi
 @ExperimentalPagerApi

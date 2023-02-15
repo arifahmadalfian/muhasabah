@@ -1,4 +1,4 @@
-package com.arifahmadalfian.jadwalsholat
+package com.arifahmadalfian.muhasabah
 
 import org.junit.Test
 

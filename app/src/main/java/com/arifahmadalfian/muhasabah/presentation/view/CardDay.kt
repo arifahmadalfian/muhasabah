@@ -1,4 +1,4 @@
-package com.arifahmadalfian.jadwalsholat.view
+package com.arifahmadalfian.muhasabah.presentation.view
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
@@ -11,7 +11,7 @@ import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.arifahmadalfian.jadwalsholat.ui.theme.Gren
+import com.arifahmadalfian.muhasabah.ui.theme.Gren
 
 @ExperimentalAnimationApi
 @Composable
